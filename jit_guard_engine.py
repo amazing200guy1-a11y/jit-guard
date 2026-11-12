@@ -64,6 +64,24 @@ class AbstractInterval:
     def is_within(self, min_val: int, max_val: int) -> bool:
         return self.lower >= min_val and self.upper <= max_val
 
+    def join(self, other: 'AbstractInterval') -> 'AbstractInterval':
+        """Lattice join (least upper bound): [min(l1, l2), max(u1, u2)]"""
+        return AbstractInterval(min(self.lower, other.lower), max(self.upper, other.upper))
+
+    def meet(self, other: 'AbstractInterval') -> Optional['AbstractInterval']:
+        """Lattice meet (greatest lower bound): [max(l1, l2), min(u1, u2)]"""
+        new_low = max(self.lower, other.lower)
+        new_high = min(self.upper, other.upper)
+        if new_low > new_high:
+            return None # Bottom (empty interval)
+        return AbstractInterval(new_low, new_high)
+
+    def widen(self, other: 'AbstractInterval', threshold: int = 1000000) -> 'AbstractInterval':
+        """Abstract interpretation widening operator to accelerate loop fixed-point convergence."""
+        new_low = self.lower if self.lower <= other.lower else -threshold
+        new_high = self.upper if self.upper >= other.upper else threshold
+        return AbstractInterval(new_low, new_high)
+
 class JITGuardVerificationError(Exception):
     pass
 

@@ -1,0 +1,15 @@
+{
+  "name": "jit-guard",
+  "version": "1.0.0",
+  "description": "Formal Hoare-logic linear memory safety & abstract interpretation sentry for LLM-generated WASM",
+  "main": "dist/wasm_verifier.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": ["formal-verification", "wasm", "abstract-interpretation", "hoare-logic"],
+  "author": "Usman Bamidele",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
